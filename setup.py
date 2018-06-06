@@ -11,7 +11,7 @@ setuptools.setup(
     description="Basic inofficial implementation of the nexpose rest api",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/pypa/example-project",
+    url="https://github.com/Patralos/nexpose-rest/",
     packages=setuptools.find_packages(),
     classifiers=(
         "Programming Language :: Python :: 3",

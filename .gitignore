@@ -2,3 +2,5 @@ build/*
 dist/*
 nexpose_rest.egg-info/*
 .idea/*
+generator/output/*
+generator/api.json

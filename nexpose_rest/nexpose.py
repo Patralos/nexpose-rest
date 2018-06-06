@@ -1,4 +1,24 @@
 import requests, base64, json
+from nexpose_rest.nexpose_administration import *
+from nexpose_rest.nexpose_asset import *
+from nexpose_rest.nexpose_asset_discovery import *
+from nexpose_rest.nexpose_asset_group import *
+from nexpose_rest.nexpose_credential import *
+from nexpose_rest.nexpose_policy import *
+from nexpose_rest.nexpose_policy_override import *
+from nexpose_rest.nexpose_remediation import *
+from nexpose_rest.nexpose_report import *
+from nexpose_rest.nexpose_root import *
+from nexpose_rest.nexpose_scan import *
+from nexpose_rest.nexpose_scan_engine import *
+from nexpose_rest.nexpose_scan_template import *
+from nexpose_rest.nexpose_site import *
+from nexpose_rest.nexpose_tag import *
+from nexpose_rest.nexpose_user import *
+from nexpose_rest.nexpose_vulnerability import *
+from nexpose_rest.nexpose_vulnerability_check import *
+from nexpose_rest.nexpose_vulnerability_exception import *
+from nexpose_rest.nexpose_vulnerability_result import *
 
 
 class Configuration:
@@ -25,8 +45,8 @@ class ServiceUnavailableError(Exception):
         super(Exception, self).__init__(message)
 
 
-def _GET(url, config, page=1, size=100):
-    args = '?page=' + str(page - 1) + '&size=' + str(size)
+def _GET(url, config, page=1, size=100, getParameters=[]):
+    args = '?' + '&'.join(getParameters + ['page=' + str(page - 1),  'size=' + str(size)])
     r = requests.get(config.host + url + args, headers={"Authorization": "Basic %s" % config.auth_data})
     try:
         if r.status_code == 500:
@@ -48,43 +68,3 @@ def _GET(url, config, page=1, size=100):
 def testConnection(config):
     code, data = _GET('/api/3', config)
     return code == 200
-
-
-def getAssetGroup(config, id):
-    code, data = _GET('/api/3/asset_groups/' + str(id), config)
-    return data
-
-
-def getAssetGroupAssets(config, id):
-    code, data = _GET('/api/3/asset_groups/' + str(id) + "/assets", config)
-    return data
-
-
-def getAssetGroups(config):
-    code, data = _GET('/api/3/asset_groups', config)
-    return data
-
-
-def getAssets(config):
-    code, data = _GET('/api/3/assets', config)
-    return data
-
-
-def getAsset(config, id):
-    code, data = _GET('/api/3/assets/' + str(id), config)
-    return data
-
-
-def getAssetVulnerabilities(config, id):
-    code, data = _GET('/api/3/assets/' + str(id) + "/vulnerabilities", config)
-    return data
-
-
-def getSites(config):
-    code, data = _GET('/api/3/sites', config)
-    return data
-
-
-def getSite(config, id):
-    code, data = _GET('/api/3/sites/' + str(id), config)
-    return data
