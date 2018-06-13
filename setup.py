@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="nexpose-rest",
-    version="0.0.1",
+    version="0.1",
     author="Patrick Pirker",
     author_email="pypi@patralos.at",
     description="Basic inofficial implementation of the nexpose rest api",

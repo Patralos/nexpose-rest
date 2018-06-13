@@ -4,3 +4,4 @@ nexpose_rest.egg-info/*
 .idea/*
 generator/output/*
 generator/api.json
+*.pyc
