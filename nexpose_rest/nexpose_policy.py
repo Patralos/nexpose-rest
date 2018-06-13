@@ -1,10 +1,12 @@
 from nexpose_rest.nexpose import _GET
 
 
-def getPolicies(config, filter, scannedOnly):
+def getPolicies(config, filter=None, scannedOnly=None):
     getParameters=[]
-    getParameters.append('filter=' + filter)
-    getParameters.append('scannedOnly=' + scannedOnly)
+    if filter is not None:
+        getParameters.append('filter=' + filter)
+    if scannedOnly is not None:
+        getParameters.append('scannedOnly=' + scannedOnly)
     code, data = _GET('/api/3/policies', config, getParameters=getParameters)
     return data
 
@@ -57,9 +59,10 @@ def getPolicyGroups(config, policyId):
     return data
 
 
-def getPolicyAssetResults(config, policyId, applicableOnly):
+def getPolicyAssetResults(config, policyId, applicableOnly=None):
     getParameters=[]
-    getParameters.append('applicableOnly=' + applicableOnly)
+    if applicableOnly is not None:
+        getParameters.append('applicableOnly=' + applicableOnly)
     code, data = _GET('/api/3/policies/' + str(policyId) + '/assets', config, getParameters=getParameters)
     return data
 
@@ -82,9 +85,10 @@ def getPolicyGroupRulesWithAssetAssessment(config, assetId, policyId, groupId):
     return data
 
 
-def getPolicyRuleAssetResults(config, policyId, ruleId, applicableOnly):
+def getPolicyRuleAssetResults(config, policyId, ruleId, applicableOnly=None):
     getParameters=[]
-    getParameters.append('applicableOnly=' + applicableOnly)
+    if applicableOnly is not None:
+        getParameters.append('applicableOnly=' + applicableOnly)
     code, data = _GET('/api/3/policies/' + str(policyId) + '/rules/' + str(ruleId) + '/assets', config, getParameters=getParameters)
     return data
 
@@ -95,9 +99,10 @@ def getAssetPolicyGroupChildren(config, assetId, policyId, groupId):
     return data
 
 
-def getPoliciesForAsset(config, assetId, applicableOnly):
+def getPoliciesForAsset(config, assetId, applicableOnly=None):
     getParameters=[]
-    getParameters.append('applicableOnly=' + applicableOnly)
+    if applicableOnly is not None:
+        getParameters.append('applicableOnly=' + applicableOnly)
     code, data = _GET('/api/3/assets/' + str(assetId) + '/policies', config, getParameters=getParameters)
     return data
 
@@ -132,9 +137,10 @@ def getPolicyAssetResult(config, policyId, assetId):
     return data
 
 
-def getPolicyGroupAssetResults(config, policyId, groupId, applicableOnly):
+def getPolicyGroupAssetResults(config, policyId, groupId, applicableOnly=None):
     getParameters=[]
-    getParameters.append('applicableOnly=' + applicableOnly)
+    if applicableOnly is not None:
+        getParameters.append('applicableOnly=' + applicableOnly)
     code, data = _GET('/api/3/policies/' + str(policyId) + '/groups/' + str(groupId) + '/assets', config, getParameters=getParameters)
     return data
 

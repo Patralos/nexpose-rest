@@ -19,11 +19,12 @@ for tag in a['tags']:
                     if x['name'] == 'page' or x['name'] == 'size' or x['name'] == 'sort':
                         continue
 
-                    parameter_names.append(x['name'])
                     if x['in'] == 'path':
                         parameter_names_path.append(x['name'])
+                        parameter_names.append(x['name'])
                     elif x['in'] == 'query':
                         parameter_names_get.append(x['name'])
+                        parameter_names.append(x['name'] + '=None')
                     else:
                         raise Exception()
                 file.write('\n\n')
@@ -34,6 +35,7 @@ for tag in a['tags']:
 
                 file.write("    getParameters=[]" + '\n')
                 for x in parameter_names_get:
-                    file.write("    getParameters.append('" + x + "=' + " + x + ")" + '\n')
+                    file.write("    if " + x + " is not None:" + '\n')
+                    file.write("        getParameters.append('" + x + "=' + " + x + ")" + '\n')
                 file.write("    code, data = _GET('" + path + "', config, getParameters=getParameters)" + '\n')
                 file.write("    return data" + '\n')

@@ -1,4 +1,25 @@
 import requests, base64, json
+
+
+def _GET(url, config, page=1, size=100, getParameters=[]):
+    args = '?' + '&'.join(getParameters + ['page=' + str(page - 1),  'size=' + str(size)])
+    r = requests.get(config.host + url + args, headers={"Authorization": "Basic %s" % config.auth_data})
+    try:
+        if r.status_code == 500:
+            raise InternalServerError("The server responded with an ERROR Code 500!")
+        elif r.status_code == 503:
+            raise ServiceUnavailableError("The requested service is not available!")
+        res = r.json()
+        if "page" in res and "resources" in res and res['page']['totalPages'] > page:
+            nested_c, nested_j = _GET(url, config, page=page + 1)
+            res['resources'] = res['resources'] + nested_j
+        if 'resources' in res:
+            return r.status_code, res['resources']
+        else:
+            return r.status_code, res
+    except ValueError as e:
+        return -1, MalformedResponseError("Unable to parse Response")
+
 from nexpose_rest.nexpose_administration import *
 from nexpose_rest.nexpose_asset import *
 from nexpose_rest.nexpose_asset_discovery import *
@@ -44,25 +65,6 @@ class ServiceUnavailableError(Exception):
     def __init__(self, message):
         super(Exception, self).__init__(message)
 
-
-def _GET(url, config, page=1, size=100, getParameters=[]):
-    args = '?' + '&'.join(getParameters + ['page=' + str(page - 1),  'size=' + str(size)])
-    r = requests.get(config.host + url + args, headers={"Authorization": "Basic %s" % config.auth_data})
-    try:
-        if r.status_code == 500:
-            raise InternalServerError("The server responded with an ERROR Code 500!")
-        elif r.status_code == 503:
-            raise ServiceUnavailableError("The requested service is not available!")
-        res = r.json()
-        if "page" in res and "resources" in res and res['page']['totalPages'] > page:
-            nested_c, nested_j = _GET(url, config, page=page + 1)
-            res['resources'] = res['resources'] + nested_j
-        if 'resources' in res:
-            return r.status_code, res['resources']
-        else:
-            return r.status_code, res
-    except ValueError as e:
-        return -1, MalformedResponseError("Unable to parse Response")
 
 
 def testConnection(config):

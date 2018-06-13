@@ -25,10 +25,12 @@ def getAssetGroupAssets(config, id):
     return data
 
 
-def getAssetGroups(config, type, name):
+def getAssetGroups(config, type=None, name=None):
     getParameters=[]
-    getParameters.append('type=' + type)
-    getParameters.append('name=' + name)
+    if type is not None:
+        getParameters.append('type=' + type)
+    if name is not None:
+        getParameters.append('name=' + name)
     code, data = _GET('/api/3/asset_groups', config, getParameters=getParameters)
     return data
 

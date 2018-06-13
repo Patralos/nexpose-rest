@@ -1,10 +1,12 @@
 from nexpose_rest.nexpose import _GET
 
 
-def getTags(config, name, type):
+def getTags(config, name=None, type=None):
     getParameters=[]
-    getParameters.append('name=' + name)
-    getParameters.append('type=' + type)
+    if name is not None:
+        getParameters.append('name=' + name)
+    if type is not None:
+        getParameters.append('type=' + type)
     code, data = _GET('/api/3/tags', config, getParameters=getParameters)
     return data
 
